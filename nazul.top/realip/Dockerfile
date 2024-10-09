@@ -10,8 +10,9 @@ RUN go get -v ./...
 RUN go build -v -o /usr/local/bin/app ./...
 
 
-FROM debian:stable-slim
-COPY --from=realip-builder /usr/local/bin/app /usr/local/bin 
+FROM alpine
+WORKDIR /go/bin
+COPY --from=realip-builder /usr/local/bin/app .
 # RUN apt-get update
 # RUN apt-get install ca-certificates
-ENTRYPOINT ["/usr/local/bin/app"]
+ENTRYPOINT ["./app"]
