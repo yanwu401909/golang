@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"io"
 	"net/http"
 )
@@ -14,6 +15,11 @@ type Result struct {
 
 func fatchData(url string) (result string, err error) {
 	client := &http.Client{}
+	client.Transport = &http.Transport{
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
+	}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return result, err
